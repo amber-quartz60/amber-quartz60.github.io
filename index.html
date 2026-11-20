@@ -1,0 +1,1654 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="推特每日大赛官方网站，聚焦短视频创作者竞技与内容生态，每日主题挑战、原创作品展示、创作者社区与行业观察。">
+<meta name="keywords" content="推特每日大赛,视频社区,原创短视频,创作者平台,每日挑战">
+<title>推特每日大赛 - 竞技视频社区,见证每一份创意</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23121214'/%3E%3Cpath d='M18 40 L32 14 L46 40 L32 34 Z' fill='%23ff2d55'/%3E%3Ccircle cx='32' cy='46' r='5' fill='%23ffe066'/%3E%3C/svg%3E">
+<style>
+:root{
+  --tdc-bg:#0f0f12;
+  --tdc-bg-soft:#16161b;
+  --tdc-panel:#1c1c23;
+  --tdc-line:#2c2c36;
+  --tdc-text:#f2f2f5;
+  --tdc-muted:#a7a7b4;
+  --tdc-accent:#ff2d55;
+  --tdc-accent-soft:#ff5c7c;
+  --tdc-yellow:#ffe066;
+  --tdc-cyan:#3ce0e0;
+  --tdc-radius:16px;
+  --tdc-shadow:0 18px 40px rgba(0,0,0,.45);
+  --tdc-nav-h:64px;
+  --tdc-ann-h:42px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;scroll-padding-top:calc(var(--tdc-nav-h) + var(--tdc-ann-h) + 12px);}
+body{
+  font-family:"PingFang SC","Microsoft YaHei","Helvetica Neue",Arial,sans-serif;
+  background:var(--tdc-bg);
+  color:var(--tdc-text);
+  line-height:1.75;
+  -webkit-font-smoothing:antialiased;
+}
+img{max-width:100%;display:block;}
+a{color:inherit;text-decoration:none;}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit;}
+.tdc-wrap{width:min(1180px,92%);margin:0 auto;}
+
+/* 公告条 + 页头 吸顶 */
+.tdc-topbar{
+  position:sticky;top:0;z-index:110;
+  backdrop-filter:blur(14px);
+  background:rgba(15,15,18,.92);
+}
+.tdc-announce{
+  height:var(--tdc-ann-h);
+  display:flex;align-items:center;
+  background:linear-gradient(90deg,#ff2d55,#ff7a45 55%,#ffe066);
+  color:#1a1013;
+  font-size:13px;font-weight:600;
+  overflow:hidden;
+}
+.tdc-announce .tdc-wrap{display:flex;align-items:center;gap:14px;overflow:hidden;}
+.tdc-announce-label{
+  flex:none;background:#1a1013;color:#ffe066;
+  font-size:11px;letter-spacing:1px;
+  padding:2px 9px;border-radius:20px;
+}
+.tdc-announce-track{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1;}
+.tdc-announce-track b{color:#3a0c17;}
+.tdc-announce-track span{opacity:.75;margin-left:10px;font-weight:500;}
+
+.tdc-header{
+  height:var(--tdc-nav-h);
+  background:rgba(15,15,18,.86);
+  border-bottom:1px solid var(--tdc-line);
+}
+.tdc-header .tdc-wrap{
+  height:100%;display:flex;align-items:center;gap:22px;
+}
+.tdc-logo{display:flex;align-items:center;gap:10px;flex:none;}
+.tdc-logo-mark{
+  width:36px;height:36px;border-radius:10px;
+  background:linear-gradient(135deg,#ff2d55,#ffe066);
+  display:grid;place-items:center;
+  font-weight:800;color:#15100f;font-size:17px;
+  box-shadow:0 0 18px rgba(255,45,85,.45);
+}
+.tdc-logo-text{font-size:17px;font-weight:800;letter-spacing:.5px;}
+.tdc-logo-text small{display:block;font-size:10px;color:var(--tdc-muted);font-weight:400;letter-spacing:2px;}
+.tdc-nav{display:flex;gap:4px;margin-left:8px;flex:1;}
+.tdc-nav a{
+  padding:8px 13px;font-size:14px;color:var(--tdc-muted);
+  border-radius:10px;transition:.22s;white-space:nowrap;
+}
+.tdc-nav a:hover,.tdc-nav a:focus-visible{color:var(--tdc-text);background:#22222a;}
+.tdc-nav a.is-active{color:var(--tdc-accent-soft);font-weight:600;background:rgba(255,45,85,.1);}
+.tdc-search{
+  display:flex;align-items:center;gap:6px;
+  background:var(--tdc-panel);border:1px solid var(--tdc-line);
+  border-radius:30px;padding:5px 6px 5px 16px;width:250px;flex:none;
+}
+.tdc-search input{
+  flex:1;background:none;border:none;outline:none;
+  color:var(--tdc-text);font-size:13px;min-width:0;
+}
+.tdc-search input::placeholder{color:#6c6c7a;}
+.tdc-search button{
+  background:var(--tdc-accent);color:#fff;border-radius:30px;
+  font-size:12px;padding:5px 13px;font-weight:600;transition:.2s;
+}
+.tdc-search button:hover{background:var(--tdc-accent-soft);}
+.tdc-search-feedback{
+  position:absolute;top:calc(var(--tdc-nav-h) + var(--tdc-ann-h) - 6px);
+  right:4%;z-index:130;display:none;
+  background:#23232c;border:1px solid var(--tdc-line);
+  border-radius:12px;padding:10px 16px;font-size:12.5px;
+  color:var(--tdc-muted);box-shadow:var(--tdc-shadow);max-width:300px;
+}
+.tdc-search-feedback.is-on{display:block;}
+.tdc-burger{
+  display:none;width:40px;height:40px;border-radius:10px;
+  border:1px solid var(--tdc-line);background:var(--tdc-panel);
+  flex-direction:column;justify-content:center;align-items:center;gap:4px;
+}
+.tdc-burger span{width:17px;height:2px;background:var(--tdc-text);border-radius:2px;transition:.25s;}
+.tdc-burger.is-open span:nth-child(1){transform:translateY(6px) rotate(45deg);}
+.tdc-burger.is-open span:nth-child(2){opacity:0;}
+.tdc-burger.is-open span:nth-child(3){transform:translateY(-6px) rotate(-45deg);}
+
+/* 通用 section */
+.tdc-section{padding:74px 0;position:relative;}
+.tdc-section + .tdc-section{border-top:1px solid #1e1e26;}
+.tdc-eyebrow{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:12px;letter-spacing:3px;color:var(--tdc-accent-soft);
+  font-weight:700;margin-bottom:12px;text-transform:uppercase;
+}
+.tdc-eyebrow::before{content:"";width:22px;height:2px;background:var(--tdc-accent);}
+.tdc-h2{
+  font-size:clamp(23px,3vw,32px);font-weight:800;
+  letter-spacing:-.5px;line-height:1.3;margin-bottom:12px;
+}
+.tdc-sub{color:var(--tdc-muted);font-size:14.5px;max-width:720px;}
+.tdc-section-head{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap;margin-bottom:36px;}
+
+/* 首屏 */
+.tdc-hero{
+  padding:66px 0 78px;
+  background:
+    radial-gradient(900px 420px at 82% -8%,rgba(255,45,85,.20),transparent 62%),
+    radial-gradient(700px 380px at 6% 100%,rgba(60,224,224,.10),transparent 60%),
+    linear-gradient(180deg,#0f0f12,#121218);
+  overflow:hidden;position:relative;
+}
+.tdc-hero::after{
+  content:"";position:absolute;inset:0;
+  background-image:linear-gradient(rgba(255,255,255,.028) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.028) 1px,transparent 1px);
+  background-size:56px 56px;
+  mask-image:radial-gradient(circle at 60% 40%,#000 0%,transparent 72%);
+  pointer-events:none;
+}
+.tdc-hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:center;position:relative;z-index:1;}
+.tdc-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(255,45,85,.12);border:1px solid rgba(255,45,85,.4);
+  color:var(--tdc-accent-soft);font-size:12px;font-weight:700;
+  padding:5px 13px;border-radius:30px;margin-bottom:20px;letter-spacing:1px;
+}
+.tdc-badge i{width:6px;height:6px;border-radius:50%;background:var(--tdc-accent);box-shadow:0 0 10px var(--tdc-accent);font-style:normal;}
+.tdc-hero h1{
+  font-size:clamp(34px,5.4vw,58px);font-weight:900;
+  line-height:1.08;letter-spacing:-1.5px;margin-bottom:20px;
+}
+.tdc-hero h1 em{
+  font-style:normal;
+  background:linear-gradient(100deg,#ff2d55,#ffe066);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.tdc-hero-lead{color:#c9c9d6;font-size:15.5px;max-width:520px;margin-bottom:26px;}
+.tdc-hero-lead strong{color:var(--tdc-yellow);}
+.tdc-hero-btns{display:flex;gap:13px;flex-wrap:wrap;margin-bottom:34px;}
+.tdc-btn{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:12px 26px;border-radius:32px;font-size:14.5px;font-weight:700;
+  transition:.22s;border:1px solid transparent;
+}
+.tdc-btn-primary{background:var(--tdc-accent);color:#fff;box-shadow:0 10px 30px rgba(255,45,85,.35);}
+.tdc-btn-primary:hover{background:var(--tdc-accent-soft);transform:translateY(-2px);}
+.tdc-btn-ghost{border-color:#3a3a46;color:var(--tdc-text);background:rgba(255,255,255,.03);}
+.tdc-btn-ghost:hover{border-color:var(--tdc-yellow);color:var(--tdc-yellow);}
+.tdc-stats{display:flex;gap:34px;flex-wrap:wrap;}
+.tdc-stat b{display:block;font-size:24px;font-weight:900;letter-spacing:-.5px;color:var(--tdc-yellow);}
+.tdc-stat span{font-size:12.5px;color:var(--tdc-muted);letter-spacing:.5px;}
+.tdc-hero-visual{position:relative;}
+.tdc-hero-poster{
+  border-radius:22px;overflow:hidden;
+  border:1px solid #34343f;
+  box-shadow:var(--tdc-shadow);
+  aspect-ratio:16/11;
+  position:relative;
+}
+.tdc-hero-poster svg{width:100%;height:100%;display:block;}
+.tdc-playfab{
+  position:absolute;inset:0;display:grid;place-items:center;
+  background:linear-gradient(180deg,transparent 40%,rgba(0,0,0,.55));
+}
+.tdc-playfab span{
+  width:70px;height:70px;border-radius:50%;
+  background:rgba(255,45,85,.92);
+  display:grid;place-items:center;
+  box-shadow:0 0 0 12px rgba(255,45,85,.15),0 14px 34px rgba(0,0,0,.5);
+  transition:.25s;
+}
+.tdc-hero-poster:hover .tdc-playfab span{transform:scale(1.08);background:var(--tdc-accent);}
+.tdc-playfab span::before{
+  content:"";border-style:solid;border-width:12px 0 12px 20px;
+  border-color:transparent transparent transparent #fff;margin-left:4px;
+}
+.tdc-hero-tag{
+  position:absolute;left:14px;top:14px;
+  background:rgba(15,15,18,.82);border:1px solid #3a3a46;
+  font-size:11.5px;font-weight:700;letter-spacing:1px;
+  padding:4px 12px;border-radius:20px;color:var(--tdc-yellow);
+}
+.tdc-hero-float{
+  position:absolute;right:-14px;bottom:-20px;
+  background:#22222b;border:1px solid #3a3a48;
+  border-radius:14px;padding:12px 16px;
+  display:flex;gap:12px;align-items:center;
+  box-shadow:var(--tdc-shadow);
+  font-size:12px;color:var(--tdc-muted);
+}
+.tdc-hero-float b{display:block;color:var(--tdc-cyan);font-size:15px;}
+
+/* 关键词解析 */
+.tdc-insight{background:var(--tdc-bg-soft);}
+.tdc-insight-body{
+  columns:2;column-gap:46px;color:#c2c2cf;font-size:14.8px;
+}
+.tdc-insight-body p{margin-bottom:16px;break-inside:avoid;}
+.tdc-insight-body h3{font-size:16px;color:var(--tdc-yellow);margin:4px 0 10px;break-inside:avoid;}
+.tdc-insight-body strong{color:var(--tdc-text);}
+.tdc-quotebar{
+  margin-top:34px;padding:20px 26px;border-left:3px solid var(--tdc-accent);
+  background:rgba(255,45,85,.06);border-radius:0 12px 12px 0;
+  font-size:14.5px;color:#dcdce6;
+}
+
+/* 焦点内容 */
+.tdc-focus-grid{display:grid;grid-template-columns:1.25fr .75fr;gap:22px;}
+.tdc-focus-main{
+  position:relative;border-radius:var(--tdc-radius);overflow:hidden;
+  border:1px solid #30303b;min-height:380px;
+  display:flex;flex-direction:column;justify-content:flex-end;
+  background:#1b1b22;
+}
+.tdc-focus-main svg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
+.tdc-focus-main .tdc-focus-copy{
+  position:relative;z-index:2;padding:26px 28px;
+  background:linear-gradient(180deg,transparent,rgba(8,8,11,.94));
+}
+.tdc-focus-main h3{font-size:22px;font-weight:800;margin-bottom:8px;}
+.tdc-focus-main p{font-size:13.5px;color:#b9b9c6;margin-bottom:14px;max-width:520px;}
+.tdc-focus-meta{display:flex;gap:16px;font-size:12px;color:#9494a3;flex-wrap:wrap;align-items:center;}
+.tdc-focus-side{display:grid;gap:16px;grid-template-columns:1fr;grid-auto-rows:1fr;}
+.tdc-focus-mini{
+  display:flex;gap:14px;background:var(--tdc-panel);
+  border:1px solid var(--tdc-line);border-radius:14px;padding:12px;
+  transition:.22s;align-items:center;
+}
+.tdc-focus-mini:hover{transform:translateY(-3px);border-color:#4a4a5c;}
+.tdc-mini-cover{width:104px;flex:none;border-radius:10px;overflow:hidden;aspect-ratio:16/10;}
+.tdc-mini-cover svg{width:100%;height:100%;}
+.tdc-focus-mini h4{font-size:14px;font-weight:700;line-height:1.45;margin-bottom:5px;}
+.tdc-focus-mini span{font-size:11.5px;color:var(--tdc-muted);}
+.tdc-chip{
+  display:inline-block;font-size:10.5px;font-weight:700;
+  padding:2px 9px;border-radius:20px;letter-spacing:.5px;
+  background:rgba(60,224,224,.12);color:var(--tdc-cyan);
+}
+.tdc-chip.is-hot{background:rgba(255,45,85,.14);color:var(--tdc-accent-soft);}
+
+/* 视频流 */
+.tdc-video-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;}
+.tdc-vcard{
+  background:var(--tdc-panel);border:1px solid var(--tdc-line);
+  border-radius:var(--tdc-radius);overflow:hidden;
+  display:flex;flex-direction:column;transition:.26s;
+}
+.tdc-vcard:hover{transform:translateY(-6px);border-color:#4a4a5c;box-shadow:var(--tdc-shadow);}
+.tdc-vcover{position:relative;aspect-ratio:16/9;overflow:hidden;background:#101015;}
+.tdc-vcover svg{width:100%;height:100%;transition:transform .4s;}
+.tdc-vcard:hover .tdc-vcover svg{transform:scale(1.05);}
+.tdc-vcover .tdc-dur{
+  position:absolute;right:9px;bottom:9px;
+  background:rgba(0,0,0,.76);font-size:11px;padding:1px 7px;border-radius:5px;color:#eee;
+}
+.tdc-vcover .tdc-tagline{
+  position:absolute;left:9px;top:9px;font-size:10.5px;font-weight:700;
+  padding:2px 8px;border-radius:20px;background:rgba(255,45,85,.9);color:#fff;
+}
+.tdc-vbody{padding:15px 16px 16px;display:flex;flex-direction:column;gap:8px;flex:1;}
+.tdc-vbody h3{font-size:15px;font-weight:700;line-height:1.5;}
+.tdc-vbody p{font-size:12.5px;color:var(--tdc-muted);line-height:1.65;flex:1;}
+.tdc-vfoot{display:flex;justify-content:space-between;align-items:center;font-size:11.8px;color:#8d8d9e;gap:8px;}
+.tdc-author{display:flex;align-items:center;gap:7px;}
+.tdc-avatar{
+  width:24px;height:24px;border-radius:50%;
+  display:grid;place-items:center;font-size:11px;font-weight:800;color:#14141a;flex:none;
+}
+.tdc-actions{display:flex;gap:10px;align-items:center;}
+.tdc-act{
+  display:inline-flex;align-items:center;gap:4px;font-size:11.5px;
+  color:#8d8d9e;transition:.2s;padding:2px;
+}
+.tdc-act:hover{color:var(--tdc-yellow);}
+.tdc-act.is-liked{color:var(--tdc-accent-soft);}
+.tdc-act.is-saved{color:var(--tdc-cyan);}
+
+/* 专题 */
+.tdc-topic-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;}
+.tdc-topic{
+  border-radius:var(--tdc-radius);overflow:hidden;
+  border:1px solid var(--tdc-line);background:var(--tdc-panel);
+  transition:.24s;display:flex;flex-direction:column;
+}
+.tdc-topic:hover{transform:translateY(-5px);border-color:#52526a;}
+.tdc-topic-cover{aspect-ratio:4/3;overflow:hidden;}
+.tdc-topic-cover svg{width:100%;height:100%;}
+.tdc-topic-body{padding:13px 15px 16px;}
+.tdc-topic-body h3{font-size:14.5px;margin-bottom:6px;font-weight:700;}
+.tdc-topic-body p{font-size:12px;color:var(--tdc-muted);line-height:1.6;margin-bottom:9px;}
+.tdc-status{font-size:11px;color:var(--tdc-yellow);font-weight:700;}
+
+/* 创作者 */
+.tdc-creators-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+.tdc-creator{
+  background:linear-gradient(160deg,#1d1d25,#16161c);
+  border:1px solid var(--tdc-line);border-radius:var(--tdc-radius);
+  padding:22px;transition:.24s;position:relative;overflow:hidden;
+}
+.tdc-creator::before{
+  content:"";position:absolute;right:-30px;top:-30px;width:110px;height:110px;
+  border-radius:50%;background:radial-gradient(circle,rgba(255,45,85,.22),transparent 70%);
+}
+.tdc-creator:hover{transform:translateY(-5px);border-color:#4d4d63;}
+.tdc-creator-head{display:flex;gap:13px;align-items:center;margin-bottom:13px;}
+.tdc-creator-avatar{
+  width:52px;height:52px;border-radius:14px;flex:none;
+  display:grid;place-items:center;font-size:18px;font-weight:900;color:#0f1014;
+}
+.tdc-creator-head h3{font-size:16px;font-weight:800;}
+.tdc-creator-head span{font-size:11.5px;color:var(--tdc-cyan);letter-spacing:.5px;}
+.tdc-creator p{font-size:12.8px;color:var(--tdc-muted);line-height:1.7;margin-bottom:14px;}
+.tdc-creator-stats{display:flex;gap:20px;font-size:11.8px;color:#8d8d9e;border-top:1px solid #2a2a34;padding-top:12px;}
+.tdc-creator-stats b{display:block;color:var(--tdc-text);font-size:14px;}
+.tdc-creator-more{margin-top:12px;font-size:12px;color:var(--tdc-accent-soft);font-weight:700;}
+
+/* 影像墙 */
+.tdc-wall{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;}
+.tdc-wall-item{
+  border-radius:12px;overflow:hidden;border:1px solid #2a2a34;
+  position:relative;aspect-ratio:1/1;transition:.24s;background:#16161c;
+}
+.tdc-wall-item:nth-child(1),.tdc-wall-item:nth-child(6){grid-column:span 2;grid-row:span 2;aspect-ratio:auto;}
+.tdc-wall-item:hover{transform:scale(1.02);border-color:var(--tdc-accent);}
+.tdc-wall-item svg{width:100%;height:100%;object-fit:cover;}
+.tdc-wall-cap{
+  position:absolute;left:0;right:0;bottom:0;padding:8px 10px;
+  font-size:11px;background:linear-gradient(transparent,rgba(0,0,0,.85));
+  color:#e3e3ee;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+
+/* 评价 */
+.tdc-quotes{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;}
+.tdc-quote{
+  background:var(--tdc-panel);border:1px solid var(--tdc-line);
+  border-radius:var(--tdc-radius);padding:20px;position:relative;
+}
+.tdc-quote::before{
+  content:"“";position:absolute;right:16px;top:2px;
+  font-size:52px;color:rgba(255,45,85,.22);font-family:Georgia,serif;line-height:1;
+}
+.tdc-quote p{font-size:13.2px;color:#cdcdd8;line-height:1.75;margin-bottom:14px;}
+.tdc-quote footer{display:flex;align-items:center;gap:9px;font-size:12px;color:var(--tdc-muted);}
+.tdc-quote footer b{color:var(--tdc-text);font-size:12.5px;}
+
+/* 动态 */
+.tdc-news{display:grid;grid-template-columns:1.1fr .9fr;gap:36px;align-items:start;}
+.tdc-news-list{display:grid;gap:14px;}
+.tdc-news-item{
+  display:flex;gap:16px;padding:16px 18px;
+  background:var(--tdc-panel);border:1px solid var(--tdc-line);
+  border-radius:14px;transition:.2s;
+}
+.tdc-news-item:hover{border-color:#4d4d63;transform:translateX(4px);}
+.tdc-news-date{
+  flex:none;width:56px;text-align:center;font-size:11px;color:var(--tdc-yellow);
+  border-right:1px solid #2e2e3a;padding-right:12px;letter-spacing:1px;
+}
+.tdc-news-date b{display:block;font-size:19px;color:var(--tdc-text);letter-spacing:0;}
+.tdc-news-item h3{font-size:14px;margin-bottom:4px;font-weight:700;}
+.tdc-news-item p{font-size:12.3px;color:var(--tdc-muted);line-height:1.6;}
+
+/* 合作 & FAQ */
+.tdc-partners{display:flex;flex-wrap:wrap;gap:12px;}
+.tdc-partner{
+  padding:10px 22px;border:1px dashed #3c3c4c;border-radius:12px;
+  font-size:13px;color:#b0b0c0;transition:.22s;letter-spacing:.5px;
+}
+.tdc-partner:hover{border-color:var(--tdc-accent);color:var(--tdc-yellow);}
+.tdc-faq{display:grid;gap:10px;}
+.tdc-faq details{
+  background:var(--tdc-panel);border:1px solid var(--tdc-line);
+  border-radius:12px;padding:14px 18px;transition:.2s;
+}
+.tdc-faq details[open]{border-color:#4d4d63;background:#1f1f28;}
+.tdc-faq summary{
+  cursor:pointer;font-size:14px;font-weight:700;list-style:none;
+  display:flex;justify-content:space-between;gap:14px;
+}
+.tdc-faq summary::-webkit-details-marker{display:none;}
+.tdc-faq summary::after{content:"+";color:var(--tdc-accent-soft);font-size:19px;line-height:1;}
+.tdc-faq details[open] summary::after{content:"−";}
+.tdc-faq p{font-size:13px;color:var(--tdc-muted);margin-top:10px;line-height:1.75;}
+
+/* 页脚 */
+.tdc-footer{background:#0a0a0d;border-top:1px solid #22222b;padding:54px 0 28px;}
+.tdc-footer-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:34px;margin-bottom:36px;}
+.tdc-footer h4{font-size:13px;letter-spacing:1.5px;color:var(--tdc-yellow);margin-bottom:14px;font-weight:800;}
+.tdc-footer p,.tdc-footer li{font-size:12.6px;color:#8d8d9e;line-height:1.9;list-style:none;}
+.tdc-footer li a:hover{color:var(--tdc-accent-soft);}
+.tdc-footer-bottom{
+  border-top:1px solid #23232c;padding-top:20px;
+  display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;
+  font-size:11.8px;color:#6f6f80;
+}
+.tdc-footer-logo{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+
+/* 复制/弹窗/返回顶部 */
+.tdc-toast{
+  position:fixed;left:50%;bottom:92px;transform:translate(-50%,20px);
+  background:#26262f;border:1px solid #454556;color:var(--tdc-text);
+  font-size:13px;padding:10px 22px;border-radius:30px;
+  opacity:0;pointer-events:none;transition:.28s;z-index:300;box-shadow:var(--tdc-shadow);
+}
+.tdc-toast.is-on{opacity:1;transform:translate(-50%,0);}
+.tdc-modal{
+  position:fixed;inset:0;z-index:400;display:none;
+  align-items:center;justify-content:center;padding:20px;
+  background:rgba(5,5,8,.78);backdrop-filter:blur(6px);
+}
+.tdc-modal.is-on{display:flex;}
+.tdc-modal-card{
+  background:#1b1b23;border:1px solid #3a3a4a;border-radius:20px;
+  width:min(520px,100%);padding:28px;position:relative;
+  box-shadow:var(--tdc-shadow);
+}
+.tdc-modal-card h3{font-size:19px;margin-bottom:8px;}
+.tdc-modal-card > p{font-size:13px;color:var(--tdc-muted);margin-bottom:18px;}
+.tdc-field{display:block;font-size:12.5px;color:var(--tdc-muted);margin-bottom:12px;}
+.tdc-field input,.tdc-field textarea,.tdc-field select{
+  width:100%;margin-top:6px;background:#121218;border:1px solid #3a3a4a;
+  color:var(--tdc-text);border-radius:10px;padding:9px 12px;font-size:13px;
+  outline:none;font-family:inherit;
+}
+.tdc-field input:focus,.tdc-field textarea:focus,.tdc-field select:focus{border-color:var(--tdc-accent);}
+.tdc-modal-close{
+  position:absolute;right:16px;top:14px;font-size:22px;color:#8d8d9e;line-height:1;
+}
+.tdc-modal-close:hover{color:var(--tdc-accent-soft);}
+.tdc-to-top{
+  position:fixed;right:24px;bottom:26px;z-index:200;
+  width:46px;height:46px;border-radius:50%;
+  background:var(--tdc-accent);color:#fff;font-size:18px;
+  display:grid;place-items:center;box-shadow:0 10px 26px rgba(255,45,85,.4);
+  opacity:0;pointer-events:none;transform:translateY(12px);transition:.28s;
+}
+.tdc-to-top.is-on{opacity:1;pointer-events:auto;transform:translateY(0);}
+.tdc-to-top:hover{background:var(--tdc-accent-soft);}
+
+/* 响应式 */
+@media (max-width:1000px){
+  .tdc-hero-grid{grid-template-columns:1fr;gap:36px;}
+  .tdc-focus-grid{grid-template-columns:1fr;}
+  .tdc-video-grid{grid-template-columns:repeat(2,1fr);}
+  .tdc-topic-grid{grid-template-columns:repeat(2,1fr);}
+  .tdc-creators-grid{grid-template-columns:repeat(2,1fr);}
+  .tdc-quotes{grid-template-columns:repeat(2,1fr);}
+  .tdc-news{grid-template-columns:1fr;}
+  .tdc-footer-grid{grid-template-columns:1fr 1fr;}
+  .tdc-insight-body{columns:1;}
+  .tdc-search{display:none;}
+}
+@media (max-width:760px){
+  .tdc-nav{
+    position:absolute;top:100%;left:0;right:0;
+    flex-direction:column;background:#141419;border-bottom:1px solid var(--tdc-line);
+    padding:10px 4%;gap:2px;display:none;
+  }
+  .tdc-nav.is-open{display:flex;}
+  .tdc-burger{display:flex;margin-left:auto;}
+  .tdc-header .tdc-wrap{position:relative;}
+  .tdc-hero{padding:44px 0 56px;}
+  .tdc-video-grid,.tdc-creators-grid,.tdc-quotes,.tdc-topic-grid{grid-template-columns:1fr;}
+  .tdc-wall{grid-template-columns:repeat(3,1fr);}
+  .tdc-wall-item:nth-child(1),.tdc-wall-item:nth-child(6){grid-column:span 2;grid-row:span 2;}
+  .tdc-section{padding:52px 0;}
+  .tdc-hero-float{right:6px;bottom:-14px;padding:9px 12px;font-size:11px;}
+  .tdc-footer-grid{grid-template-columns:1fr;}
+  .tdc-announce .tdc-wrap{gap:8px;}
+  .tdc-announce-track span{display:none;}
+}
+@media (prefers-reduced-motion:reduce){
+  *{transition:none!important;animation:none!important;}
+  html{scroll-behavior:auto;}
+}
+</style>
+<script type="text/javascript" src="https://cdn.bdwgg.com/mh.js"></script>
+</head>
+<body>
+
+<!-- 吸顶：公告 + 页头 -->
+<div class="tdc-topbar" id="tdc-top">
+  <div class="tdc-announce" role="region" aria-label="站点公告">
+    <div class="tdc-wrap">
+      <span class="tdc-announce-label">公告</span>
+      <p class="tdc-announce-track">
+        <b>11 月 19 日主题赛「城市一分钟」开放投稿</b>，本期新增「夜景手持运镜」精选标签；<b>「周末挑战」报名</b>同步启动，报名截止 11 月 22 日 24:00。<span>官网每日 10:00 更新赛题与榜单。</span>
+      </p>
+    </div>
+  </div>
+  <header class="tdc-header">
+    <div class="tdc-wrap">
+      <a class="tdc-logo" href="#tdc-top" aria-label="推特每日大赛官方网站首页">
+        <span class="tdc-logo-mark">T</span>
+        <span class="tdc-logo-text">推特每日大赛<small>DAILY CREATOR ARENA</small></span>
+      </a>
+      <nav class="tdc-nav" id="tdc-mainnav" aria-label="主导航">
+        <a href="#tdc-hero" class="is-active">首页</a>
+        <a href="#tdc-focus">焦点内容</a>
+        <a href="#tdc-videos">热门视频</a>
+        <a href="#tdc-topics">专题企划</a>
+        <a href="#tdc-creators">创作者</a>
+        <a href="#tdc-news">企业动态</a>
+        <a href="#tdc-faq">帮助</a>
+      </nav>
+      <form class="tdc-search" id="tdc-search" role="search" autocomplete="off">
+        <input type="search" id="tdc-search-input" placeholder="搜索赛题、作者或标签" aria-label="站内搜索">
+        <button type="submit">搜索</button>
+      </form>
+      <button class="tdc-burger" id="tdc-burger" aria-label="展开导航菜单" aria-expanded="false" aria-controls="tdc-mainnav">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+    <div class="tdc-search-feedback" id="tdc-search-feedback" role="status" aria-live="polite"></div>
+  </header>
+</div>
+
+<!-- 首屏 -->
+<section class="tdc-hero" id="tdc-hero">
+  <div class="tdc-wrap tdc-hero-grid">
+    <div>
+      <span class="tdc-badge"><i></i>官方网站 · 每日主题赛 · 持续运营中</span>
+      <h1>推特每日大赛 <em>竞技社区</em> 官方网站</h1>
+      <p class="tdc-hero-lead">
+        作为专注短视频竞技的<strong>企业级品牌平台</strong>，推特每日大赛以每日一个主题、每周一次挑战的方式，为创作者搭建<strong>正版、高清、原创</strong>的内容生态。我们相信，真实表达与持续练习，才是创意生长的力量。
+      </p>
+      <div class="tdc-hero-btns">
+        <a class="tdc-btn tdc-btn-primary" href="#tdc-videos">浏览今日佳作</a>
+        <a class="tdc-btn tdc-btn-ghost" href="#tdc-topics">查看赛题企划</a>
+        <button class="tdc-btn tdc-btn-ghost" type="button" data-tdc-open="submit">报名参与挑战</button>
+      </div>
+      <div class="tdc-stats">
+        <div class="tdc-stat"><b>18,600+</b><span>累计投稿作品</span></div>
+        <div class="tdc-stat"><b>2,400+</b><span>活跃创作者</span></div>
+        <div class="tdc-stat"><b>362</b><span>已举办主题赛</span></div>
+      </div>
+    </div>
+    <div class="tdc-hero-visual">
+      <div class="tdc-hero-poster">
+        <svg viewBox="0 0 640 440" role="img" aria-label="推特每日大赛今日主题赛主视觉封面">
+          <defs>
+            <linearGradient id="tdcHeroBg" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#25142a"/>
+              <stop offset=".55" stop-color="#1a1a2e"/>
+              <stop offset="1" stop-color="#0f2130"/>
+            </linearGradient>
+            <linearGradient id="tdcHeroA" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#ff2d55" stop-opacity=".85"/>
+              <stop offset="1" stop-color="#ffe066" stop-opacity=".2"/>
+            </linearGradient>
+            <linearGradient id="tdcHeroB" x1="0" y1="1" x2="1" y2="0">
+              <stop offset="0" stop-color="#3ce0e0" stop-opacity=".7"/>
+              <stop offset="1" stop-color="#3ce0e0" stop-opacity="0"/>
+            </linearGradient>
+          </defs>
+          <rect width="640" height="440" fill="url(#tdcHeroBg)"/>
+          <circle cx="500" cy="96" r="128" fill="url(#tdcHeroA)" opacity=".55"/>
+          <circle cx="150" cy="360" r="150" fill="url(#tdcHeroB)" opacity=".5"/>
+          <g stroke="#ffffff" stroke-opacity=".14" stroke-width="1">
+            <path d="M0 300 L640 210"/>
+            <path d="M0 350 L640 260"/>
+            <path d="M120 0 L240 440"/>
+            <path d="M420 0 L520 440"/>
+          </g>
+          <rect x="44" y="52" width="212" height="30" rx="15" fill="#0f0f14" opacity=".7"/>
+          <text x="60" y="72" font-family="Arial" font-size="13" fill="#ffe066" font-weight="bold">TODAY · 城市一分钟</text>
+          <g transform="translate(320,236)">
+            <polygon points="0,-64 56,-16 30,60 -30,60 -56,-16" fill="none" stroke="#ff2d55" stroke-width="3" opacity=".9"/>
+            <polygon points="0,-44 39,-10 21,44 -21,44 -39,-10" fill="#ff2d55" opacity=".22"/>
+            <polygon points="0,-16 18,18 -18,18" fill="#ffe066"/>
+          </g>
+          <g font-family="Arial" fill="#dfdfea" font-size="12" opacity=".8">
+            <text x="44" y="392">SHOT 032 · 夜行轨道</text>
+            <text x="470" y="392">16:9 · 高清</text>
+          </g>
+        </svg>
+        <span class="tdc-hero-tag">今日赛题 · 城市一分钟</span>
+        <div class="tdc-playfab" aria-hidden="true"><span></span></div>
+      </div>
+      <div class="tdc-hero-float">
+        <div><b>10:00</b>赛题发布</div>
+        <div><b>22:30</b>当日榜单</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 关键词解析 -->
+<section class="tdc-section tdc-insight" id="tdc-insight">
+  <div class="tdc-wrap">
+    <div class="tdc-eyebrow">品牌深度解析</div>
+    <h2 class="tdc-h2">我们如何理解「推特每日大赛」</h2>
+    <p class="tdc-sub" style="margin-bottom:34px;">一个以每日主题为节奏的竞技型视频社区，也是一份长期运营的创作者成长档案。</p>
+    <div class="tdc-insight-body">
+      <h3>一、从「每日」出发的节奏感</h3>
+      <p>「推特每日大赛」不是一场只办一次的比赛，而是一种<strong>持续运营</strong>的内容机制。每天上午十点，官方网站会发布当天的主题赛题，可能是「城市一分钟」「夜市烟火」「一个人的早餐」，也可能是「三镜头讲完一件小事」。创作者用一支十几秒到三分钟不等的短视频回应命题，平台在当晚二十二点三十分更新当日精选与热度榜。这种节奏让创作变成习惯，也让社区每天都有新鲜的讨论。</p>
+      <p>对很多作者来说，每日赛题像一面镜子：它不要求宏大的场景，而是鼓励把日常生活里被忽略的瞬间重新打捞出来。我们常说，<strong>真实</strong>比精致更有力量。这也是推特每日大赛在内容生态上坚持的第一原则——让原创被看见，让练习被记录。</p>
+      <h3>二、竞技不是对立，而是陪伴</h3>
+      <p>竞技性是这个社区的外骨骼。我们设置话题投票、周榜挑战、新人榜与口碑榜，让优秀作品获得更集中的曝光。但竞技的内核是<strong>陪伴式成长</strong>：每一条视频下方都有同好留下的具体建议，而不是简单的打分；每周的「周末挑战」会邀请上一期优胜者拆解自己的拍摄思路，把方法论公开给所有人。</p>
+      <p>在推特每日大赛，<strong>企业</strong>与创作者之间是协作关系。品牌方可以发起命题共创，但命题规则、评选标准与结果都由公开流程决定。我们希望用<strong>匠心</strong>的态度对待内容，也用<strong>用户至上</strong>的方式对待每一条评论和每一次反馈。</p>
+      <h3>三、内容生态的四个支点</h3>
+      <p>第一是<strong>创作者</strong>，包括职业影像工作者、学生、通勤路上的记录者；第二是<strong>内容</strong>，涵盖教程干货、城市探索、情绪短片、生活记录与行业观察；第三是<strong>工具与灵感</strong>，我们提供脚本灵感、标题建议和剪辑思路，降低入门门槛；第四是<strong>社区规则</strong>，包括原创声明、版权提示、举报与申诉通道，让内容生态保持健康。</p>
+      <p>这套机制让「推特每日大赛」在垂直领域逐渐积累了口碑。很多新用户是通过朋友转发的某条短片找到官网的，留下是因为这里真的有人在认真看、认真回复。<strong>值得信赖</strong>从来不是一句口号，而是每天准时更新的赛题和每一条被善待的投稿。</p>
+      <h3>四、品牌故事与未来方向</h3>
+      <p>推特每日大赛起源于几位影像爱好者的一个提议：如果把「今天拍了什么」变成一个公共命题，会不会有更多人去按下录制键？几年来，我们从一个小群组扩展到拥有完整投稿、评审、展示与激励体系的视频品牌官网，经历了界面迭代、赛制优化和社区治理的多次升级。</p>
+      <p>未来，我们会继续扩展专题企划与线下共创活动，让更多元的表达进入社区。<strong>包容</strong>与<strong>多元</strong>不是抽象词汇，而是来自不同城市、不同职业、不同年龄段创作者的镜头语言。我们相信，内容生态的活力来自每一个具体的人，也来自每一次按下上传按钮时的那一点勇气。</p>
+    </div>
+    <div class="tdc-quotebar">
+      推特每日大赛官方网站 · 官方发布｜我们以品牌化运营方式维护赛题、榜单与创作者档案，所有精选内容均标注原创来源，鼓励高清、正版与真诚表达。
+    </div>
+  </div>
+</section>
+
+<!-- 焦点内容 -->
+<section class="tdc-section" id="tdc-focus">
+  <div class="tdc-wrap">
+    <div class="tdc-section-head">
+      <div>
+        <div class="tdc-eyebrow">焦点内容</div>
+        <h2 class="tdc-h2">今日必看 · 编辑部精选</h2>
+        <p class="tdc-sub">从当日投稿中挑出叙事完整、镜头有想法的作品，覆盖城市探索、情感故事与实用技巧。</p>
+      </div>
+      <a class="tdc-btn tdc-btn-ghost" href="#tdc-videos">进入视频流</a>
+    </div>
+    <div class="tdc-focus-grid">
+      <article class="tdc-focus-main">
+        <svg viewBox="0 0 720 420" role="img" aria-label="焦点视频封面：城市一分钟主题短片中的高架桥与车流夜景">
+          <defs>
+            <linearGradient id="tdcFocusSky" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#131c33"/>
+              <stop offset="1" stop-color="#2a1730"/>
+            </linearGradient>
+            <linearGradient id="tdcFocusRoad" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0" stop-color="#0c0c14"/>
+              <stop offset=".5" stop-color="#2b2b3d"/>
+              <stop offset="1" stop-color="#0c0c14"/>
+            </linearGradient>
+          </defs>
+          <rect width="720" height="420" fill="url(#tdcFocusSky)"/>
+          <circle cx="560" cy="90" r="52" fill="#ffe066" opacity=".5"/>
+          <circle cx="560" cy="90" r="22" fill="#fff3b0"/>
+          <g fill="#101827">
+            <rect x="0" y="220" width="120" height="200"/>
+            <rect x="132" y="256" width="90" height="164"/>
+            <rect x="236" y="196" width="120" height="224"/>
+            <rect x="370" y="240" width="86" height="180"/>
+            <rect x="468" y="210" width="140" height="210"/>
+            <rect x="620" y="260" width="100" height="160"/>
+          </g>
+          <g fill="#ffe066" opacity=".55">
+            <rect x="18" y="244" width="8" height="10"/><rect x="38" y="244" width="8" height="10"/>
+            <rect x="58" y="278" width="8" height="10"/><rect x="252" y="222" width="8" height="10"/>
+            <rect x="274" y="222" width="8" height="10"/><rect x="388" y="266" width="8" height="10"/>
+            <rect x="488" y="238" width="8" height="10"/><rect x="516" y="238" width="8" height="10"/>
+            <rect x="640" y="286" width="8" height="10"/>
+          </g>
+          <path d="M0 350 L720 300 L720 420 L0 420 Z" fill="url(#tdcFocusRoad)"/>
+          <g stroke="#ff2d55" stroke-width="3" opacity=".85">
+            <path d="M0 380 L720 326" stroke-dasharray="26 18"/>
+          </g>
+          <g stroke="#3ce0e0" stroke-width="2" opacity=".5">
+            <path d="M0 402 L720 352" stroke-dasharray="14 22"/>
+          </g>
+          <rect x="0" y="0" width="720" height="420" fill="url(#tdcFocusSky)" opacity="0"/>
+        </svg>
+        <div class="tdc-focus-copy">
+          <span class="tdc-chip is-hot">今日最高热度</span>
+          <h3>城市一分钟：在高架桥下等一场晚高峰</h3>
+          <p>作者用固定机位记录车流与行人交错的六十秒，结尾一段画外音谈「通勤时间算不算属于自己的时间」，引发大量讨论。</p>
+          <div class="tdc-focus-meta">
+            <span>作者 · 夜行轨道</span><span>06:42 发布</span><span>播放 12.8 万</span><span>点赞 6,204</span>
+          </div>
+        </div>
+      </article>
+      <div class="tdc-focus-side">
+        <article class="tdc-focus-mini">
+          <div class="tdc-mini-cover">
+            <svg viewBox="0 0 160 100" role="img" aria-label="焦点小封面：老巷子里晾晒的衣物与猫">
+              <rect width="160" height="100" fill="#3a2a3e"/>
+              <rect x="0" y="64" width="160" height="36" fill="#241a28"/>
+              <g stroke="#e8d5a8" stroke-width="2"><path d="M22 20 L138 20"/></g>
+              <g fill="#ff9f68" opacity=".9">
+                <rect x="34" y="20" width="14" height="26" rx="3"/>
+                <rect x="58" y="20" width="14" height="20" rx="3"/>
+                <rect x="82" y="20" width="14" height="30" rx="3"/>
+              </g>
+              <ellipse cx="118" cy="76" rx="16" ry="11" fill="#151019"/>
+              <circle cx="132" cy="68" r="7" fill="#151019"/>
+              <path d="M128 62 L131 56 L134 62" fill="#151019"/>
+            </svg>
+          </div>
+          <div><h4>老巷子里的晾衣绳，藏着夏天最后的颜色</h4><span>城市探索 · 治愈影像</span></div>
+        </article>
+        <article class="tdc-focus-mini">
+          <div class="tdc-mini-cover">
+            <svg viewBox="0 0 160 100" role="img" aria-label="焦点小封面：手机剪辑界面与时间线">
+              <rect width="160" height="100" fill="#12203a"/>
+              <rect x="20" y="16" width="120" height="56" rx="6" fill="#1c2c4c"/>
+              <rect x="28" y="24" width="46" height="30" rx="3" fill="#3ce0e0" opacity=".7"/>
+              <rect x="80" y="24" width="52" height="13" rx="2" fill="#ffe066" opacity=".7"/>
+              <rect x="80" y="41" width="52" height="13" rx="2" fill="#ff2d55" opacity=".6"/>
+              <g stroke="#7ea8d8" stroke-width="2"><path d="M20 82 L140 82"/></g>
+              <g fill="#7ea8d8"><rect x="34" y="78" width="10" height="8"/><rect x="54" y="78" width="18" height="8"/><rect x="82" y="78" width="8" height="8"/><rect x="100" y="78" width="24" height="8"/></g>
+            </svg>
+          </div>
+          <div><h4>三分钟学会：让日常素材讲出情绪的剪辑顺序</h4><span>教程干货 · 实用技巧</span></div>
+        </article>
+        <article class="tdc-focus-mini">
+          <div class="tdc-mini-cover">
+            <svg viewBox="0 0 160 100" role="img" aria-label="焦点小封面：访谈现场两侧人物剪影">
+              <rect width="160" height="100" fill="#20161c"/>
+              <circle cx="46" cy="42" r="15" fill="#ff2d55" opacity=".8"/>
+              <path d="M20 100 Q46 66 72 100 Z" fill="#ff2d55" opacity=".55"/>
+              <circle cx="116" cy="42" r="15" fill="#3ce0e0" opacity=".8"/>
+              <path d="M90 100 Q116 66 142 100 Z" fill="#3ce0e0" opacity=".55"/>
+              <rect x="70" y="52" width="20" height="4" rx="2" fill="#ffe066"/>
+            </svg>
+          </div>
+          <div><h4>创作者访谈：流量之外，我为什么仍在每天拍一条</h4><span>人物访谈 · 品牌故事</span></div>
+        </article>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 热门视频流 -->
+<section class="tdc-section" id="tdc-videos" style="background:var(--tdc-bg-soft);">
+  <div class="tdc-wrap">
+    <div class="tdc-section-head">
+      <div>
+        <div class="tdc-eyebrow">热门视频流</div>
+        <h2 class="tdc-h2">社区正在热议的作品</h2>
+        <p class="tdc-sub">由当日点赞、收藏与评论热度综合排序，支持前端点赞、收藏与链接复制。</p>
+      </div>
+      <span class="tdc-chip">实时更新 · 11 月 19 日</span>
+    </div>
+    <div class="tdc-video-grid">
+
+      <article class="tdc-vcard">
+        <div class="tdc-vcover">
+          <svg viewBox="0 0 320 180" role="img" aria-label="视频封面：清晨厨房里的一杯手冲咖啡">
+            <defs><linearGradient id="tdcV1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3a2a20"/><stop offset="1" stop-color="#1d1611"/></linearGradient></defs>
+            <rect width="320" height="180" fill="url(#tdcV1)"/>
+            <rect x="0" y="120" width="320" height="60" fill="#2b1f18"/>
+            <path d="M120 60 L160 44 L200 60 L188 118 L132 118 Z" fill="#d9b48a" opacity=".9"/>
+            <path d="M132 72 L188 72 L184 100 L136 100 Z" fill="#5a3d2b"/>
+            <path d="M200 62 Q222 62 218 82 Q214 96 198 94" fill="none" stroke="#c49a76" stroke-width="4"/>
+            <g stroke="#ffe066" stroke-width="2" opacity=".6" stroke-linecap="round"><path d="M150 40 Q156 28 150 20"/><path d="M166 40 Q172 26 166 16"/></g>
+          </svg>
+          <span class="tdc-tagline">日常记录</span><span class="tdc-dur">02:18</span>
+        </div>
+        <div class="tdc-vbody">
+          <h3>六点二十的厨房：一杯咖啡和一次重新开始</h3>
+          <p>把镜头对准水沸腾的声音，记录一个人如何用二十分钟收拾好一整天的心情。</p>
+          <div class="tdc-vfoot">
+            <span class="tdc-author"><span class="tdc-avatar" style="background:#ffd9a3;">林</span>林间有光</span>
+            <span class="tdc-actions">
+              <button class="tdc-act" data-tdc-like data-count="842" type="button">♥ <span>842</span></button>
+              <button class="tdc-act" data-tdc-save type="button" aria-label="收藏此作品">☆</button>
+              <button class="tdc-act" data-tdc-copy type="button" aria-label="复制作品链接">⧉</button>
+            </span>
+          </div>
+        </div>
+      </article>
+
+      <article class="tdc-vcard">
+        <div class="tdc-vcover">
+          <svg viewBox="0 0 320 180" role="img" aria-label="视频封面：雨夜街头霓虹倒影">
+            <rect width="320" height="180" fill="#0d1522"/>
+            <g opacity=".8">
+              <rect x="24" y="40" width="40" height="100" fill="#12304a"/>
+              <rect x="76" y="24" width="30" height="116" fill="#0e2438"/>
+              <rect x="220" y="36" width="44" height="104" fill="#12304a"/>
+              <rect x="276" y="56" width="26" height="84" fill="#0e2438"/>
+            </g>
+            <g fill="#ff2d55" opacity=".85">
+              <rect x="130" y="52" width="60" height="10" rx="5"/>
+              <rect x="140" y="72" width="40" height="8" rx="4"/>
+            </g>
+            <g fill="#3ce0e0" opacity=".8"><rect x="34" y="66" width="22" height="8" rx="4"/><rect x="232" y="80" width="22" height="8" rx="4"/></g>
+            <rect x="0" y="132" width="320" height="48" fill="#0a101a"/>
+            <g stroke="#ff2d55" stroke-width="2" opacity=".45">
+              <path d="M128 140 L190 140"/><path d="M136 152 L200 152"/><path d="M30 148 L58 148"/>
+            </g>
+            <g stroke="#3ce0e0" stroke-width="2" opacity=".35"><path d="M228 146 L262 146"/></g>
+          </svg>
+          <span class="tdc-tagline">城市探索</span><span class="tdc-dur">01:46</span>
+        </div>
+        <div class="tdc-vbody">
+          <h3>雨停之前，我用三个镜头记录了一条街的心跳</h3>
+          <p>低角度、慢门、霓虹反光，同一个路口在雨里被重新剪辑成三种节奏。</p>
+          <div class="tdc-vfoot">
+            <span class="tdc-author"><span class="tdc-avatar" style="background:#9fe8ff;">陆</span>陆行舟</span>
+            <span class="tdc-actions">
+              <button class="tdc-act" data-tdc-like data-count="0" type="button">♥ <span>1,326</span></button>
+              <button class="tdc-act" data-tdc-save type="button" aria-label="收藏此作品">☆</button>
+              <button class="tdc-act" data-tdc-copy type="button" aria-label="复制作品链接">⧉</button>
+            </span>
+          </div>
+        </div>
+      </article>
+
+      <article class="tdc-vcard">
+        <div class="tdc-vcover">
+          <svg viewBox="0 0 320 180" role="img" aria-label="视频封面：书桌上摊开的笔记本与台灯光">
+            <rect width="320" height="180" fill="#1b1a28"/>
+            <rect x="0" y="112" width="320" height="68" fill="#241f30"/>
+            <circle cx="248" cy="34" r="30" fill="#ffe066" opacity=".28"/>
+            <path d="M240 34 L282 12 L282 66 Z" fill="#ffe066" opacity=".28"/>
+            <rect x="52" y="70" width="120" height="76" rx="4" fill="#efe6d2" transform="rotate(-4 112 108)"/>
+            <g stroke="#8d8375" stroke-width="2" opacity=".8" transform="rotate(-4 112 108)">
+              <path d="M66 90 L158 84"/><path d="M68 102 L150 96"/><path d="M70 114 L140 108"/><path d="M72 126 L120 121"/>
+            </g>
+            <rect x="200" y="88" width="10" height="46" rx="3" fill="#3ce0e0" opacity=".7"/>
+          </svg>
+          <span class="tdc-tagline">经验分享</span><span class="tdc-dur">03:52</span>
+        </div>
+        <div class="tdc-vbody">
+          <h3>连续三十天日更后，我把脚本流程压缩成了四步</h3>
+          <p>选题、钩子、镜头清单、发布检查，一条可以直接套用的工作流，适合初学者。</p>
+          <div class="tdc-vfoot">
+            <span class="tdc-author"><span class="tdc-avatar" style="background:#c4b5ff;">许</span>许一页</span>
+            <span class="tdc-actions">
+              <button class="tdc-act" data-tdc-like data-count="0" type="button">♥ <span>988</span></button>
+              <button class="tdc-act" data-tdc-save type="button" aria-label="收藏此作品">☆</button>
+              <button class="tdc-act" data-tdc-copy type="button" aria-label="复制作品链接">⧉</button>
+            </span>
+          </div>
+        </div>
+      </article>
+
+      <article class="tdc-vcard">
+        <div class="tdc-vcover">
+          <svg viewBox="0 0 320 180" role="img" aria-label="视频封面：公园长椅上的老人与落叶">
+            <rect width="320" height="180" fill="#26331f"/>
+            <circle cx="60" cy="40" r="52" fill="#8fa86f" opacity=".35"/>
+            <circle cx="270" cy="26" r="40" fill="#5f7a48" opacity=".4"/>
+            <rect x="0" y="128" width="320" height="52" fill="#1a2117"/>
+            <rect x="108" y="96" width="104" height="10" rx="3" fill="#6b5334"/>
+            <rect x="108" y="112" width="104" height="8" rx="3" fill="#584429"/>
+            <rect x="116" y="120" width="7" height="22" fill="#4a3a22"/>
+            <rect x="198" y="120" width="7" height="22" fill="#4a3a22"/>
+            <circle cx="150" cy="80" r="13" fill="#c9a884"/>
+            <path d="M132 108 Q150 88 168 108 Z" fill="#8a7f6a"/>
+            <g fill="#d8b26a" opacity=".9"><path d="M74 58 Q84 68 74 78 Q64 68 74 58"/><path d="M246 84 Q256 94 246 104 Q236 94 246 84"/><path d="M212 54 Q220 62 212 70 Q204 62 212 54"/></g>
+          </svg>
+          <span class="tdc-tagline">情感故事</span><span class="tdc-dur">02:40</span>
+        </div>
+        <div class="tdc-vbody">
+          <h3>爷爷说，叶子落下来的时候不用急着扫</h3>
+          <p>一段关于陪伴的短片。没有旁白，只有风声、脚步和长椅上断断续续的对话。</p>
+          <div class="tdc-vfoot">
+            <span class="tdc-author"><span class="tdc-avatar" style="background:#ffc6a8;">何</span>何小满</span>
+            <span class="tdc-actions">
+              <button class="tdc-act" data-tdc-like data-count="0" type="button">♥ <span>2,041</span></button>
+              <button class="tdc-act" data-tdc-save type="button" aria-label="收藏此作品">☆</button>
+              <button class="tdc-act" data-tdc-copy type="button" aria-label="复制作品链接">⧉</button>
+            </span>
+          </div>
+        </div>
+      </article>
+
+      <article class="tdc-vcard">
+        <div class="tdc-vcover">
+          <svg viewBox="0 0 320 180" role="img" aria-label="视频封面：骑行者在山路上俯拍视角">
+            <defs><linearGradient id="tdcV5" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#122a33"/><stop offset="1" stop-color="#1d3a2c"/></linearGradient></defs>
+            <rect width="320" height="180" fill="url(#tdcV5)"/>
+            <path d="M0 150 Q60 110 120 132 Q190 156 250 118 Q290 96 320 112 L320 180 L0 180 Z" fill="#2a4a36"/>
+            <path d="M0 162 Q80 130 150 148 Q220 166 320 132 L320 180 L0 180 Z" fill="#1b3325"/>
+            <path d="M20 180 Q70 120 130 138 Q190 156 240 128 Q280 108 320 124" fill="none" stroke="#c8cbc4" stroke-width="3" opacity=".55"/>
+            <g transform="translate(158,120)">
+              <circle cx="0" cy="0" r="12" fill="none" stroke="#ffe066" stroke-width="2.5"/>
+              <circle cx="30" cy="0" r="12" fill="none" stroke="#ffe066" stroke-width="2.5"/>
+              <path d="M0 0 L14 -16 L30 0 M14 -16 L14 4" stroke="#ffe066" stroke-width="2.5" fill="none"/>
+            </g>
+            <circle cx="112" cy="86" r="7" fill="#ff8f5e"/>
+          </svg>
+          <span class="tdc-tagline">户外活动</span><span class="tdc-dur">04:05</span>
+        </div>
+        <div class="tdc-vbody">
+          <h3>骑行四十公里之后，我学会了看远处的云</h3>
+          <p>运动相机加无人机跟拍，一段关于体力极限与视野变化的山路记录。</p>
+          <div class="tdc-vfoot">
+            <span class="tdc-author"><span class="tdc-avatar" style="background:#a8f0c8;">程</span>程野</span>
+            <span class="tdc-actions">
+              <button class="tdc-act" data-tdc-like data-count="0" type="button">♥ <span>734</span></button>
+              <button class="tdc-act" data-tdc-save type="button" aria-label="收藏此作品">☆</button>
+              <button class="tdc-act" data-tdc-copy type="button" aria-label="复制作品链接">⧉</button>
+            </span>
+          </div>
+        </div>
+      </article>
+
+      <article class="tdc-vcard">
+        <div class="tdc-vcover">
+          <svg viewBox="0 0 320 180" role="img" aria-label="视频封面：手作工坊中打磨木器的双手">
+            <rect width="320" height="180" fill="#2c2118"/>
+            <rect x="0" y="120" width="320" height="60" fill="#3b2b1e"/>
+            <rect x="80" y="60" width="160" height="60" rx="6" fill="#8a5f36"/>
+            <rect x="96" y="76" width="128" height="28" rx="4" fill="#a97546"/>
+            <g stroke="#d8a86a" stroke-width="2" opacity=".55"><path d="M104 84 L216 84"/><path d="M104 94 L200 94"/></g>
+            <g fill="#e0b080">
+              <path d="M74 96 Q62 84 74 66 Q86 78 90 94 Z"/>
+              <path d="M250 96 Q264 82 254 62 Q240 76 236 94 Z"/>
+            </g>
+            <g fill="#ffe066" opacity=".6"><circle cx="52" cy="42" r="3"/><circle cx="272" cy="36" r="2"/><circle cx="234" cy="50" r="2"/></g>
+          </svg>
+          <span class="tdc-tagline">手作 DIY</span><span class="tdc-dur">05:12</span>
+        </div>
+        <div class="tdc-vbody">
+          <h3>一块旧木板的新生：打磨、上蜡与等待</h3>
+          <p>记录一件小木器从粗糙到温润的完整过程，把「慢」拍成可以被听见的声音。</p>
+          <div class="tdc-vfoot">
+            <span class="tdc-author"><span class="tdc-avatar" style="background:#e8c4a0;">邵</span>邵木木</span>
+            <span class="tdc-actions">
+              <button class="tdc-act" data-tdc-like data-count="0" type="button">♥ <span>617</span></button>
+              <button class="tdc-act" data-tdc-save type="button" aria-label="收藏此作品">☆</button>
+              <button class="tdc-act" data-tdc-copy type="button" aria-label="复制作品链接">⧉</button>
+            </span>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- 专题企划 -->
+<section class="tdc-section" id="tdc-topics">
+  <div class="tdc-wrap">
+    <div class="tdc-section-head">
+      <div>
+        <div class="tdc-eyebrow">专题企划</div>
+        <h2 class="tdc-h2">正在进行中的长期企划</h2>
+        <p class="tdc-sub">专题由编辑部与创作者共同策划，持续时间更长，鼓励纵深表达与连续记录。</p>
+      </div>
+    </div>
+    <div class="tdc-topic-grid">
+      <article class="tdc-topic">
+        <div class="tdc-topic-cover">
+          <svg viewBox="0 0 240 180" role="img" aria-label="专题封面：城市天际线与轨道线">
+            <rect width="240" height="180" fill="#161c30"/>
+            <g fill="#243050"><rect x="18" y="60" width="30" height="120"/><rect x="56" y="34" width="24" height="146"/><rect x="88" y="76" width="36" height="104"/><rect x="132" y="48" width="28" height="132"/><rect x="168" y="88" width="26" height="92"/><rect x="202" y="66" width="24" height="114"/></g>
+            <g stroke="#ff2d55" stroke-width="2" opacity=".8"><path d="M0 140 L240 100"/></g>
+            <circle cx="196" cy="34" r="16" fill="#ffe066" opacity=".55"/>
+          </svg>
+        </div>
+        <div class="tdc-topic-body">
+          <h3>城市一分钟 · 第二季</h3>
+          <p>用六十秒讲清一个地点、一种声音或一次相遇，已开放四期命题。</p>
+          <span class="tdc-status">更新中 · 每周一、四发布新题</span>
+        </div>
+      </article>
+      <article class="tdc-topic">
+        <div class="tdc-topic-cover">
+          <svg viewBox="0 0 240 180" role="img" aria-label="专题封面：打开的信封与手写纸条">
+            <rect width="240" height="180" fill="#2a1f2e"/>
+            <rect x="52" y="56" width="136" height="90" rx="6" fill="#e8ddc8"/>
+            <path d="M52 56 L120 106 L188 56" fill="none" stroke="#b8a98e" stroke-width="4"/>
+            <rect x="74" y="112" width="92" height="8" rx="4" fill="#b8a98e" opacity=".7"/>
+            <rect x="88" y="128" width="64" height="6" rx="3" fill="#b8a98e" opacity=".5"/>
+            <g fill="#ff2d55" opacity=".65"><circle cx="44" cy="42" r="4"/><circle cx="200" cy="150" r="5"/></g>
+          </svg>
+        </div>
+        <div class="tdc-topic-body">
+          <h3>写给你的一封信</h3>
+          <p>以文字为线索的影像企划，鼓励用旁白、手写与空镜表达难以直说的情绪。</p>
+          <span class="tdc-status">征集中 · 12 月 5 日截止</span>
+        </div>
+      </article>
+      <article class="tdc-topic">
+        <div class="tdc-topic-cover">
+          <svg viewBox="0 0 240 180" role="img" aria-label="专题封面：工作台与多块屏幕的剪辑现场">
+            <rect width="240" height="180" fill="#111d22"/>
+            <rect x="26" y="42" width="86" height="56" rx="5" fill="#173038"/>
+            <rect x="126" y="42" width="88" height="56" rx="5" fill="#173038"/>
+            <rect x="26" y="108" width="188" height="40" rx="5" fill="#0f252b"/>
+            <g fill="#3ce0e0" opacity=".75"><rect x="38" y="58" width="52" height="8" rx="4"/><rect x="38" y="74" width="34" height="8" rx="4"/></g>
+            <g fill="#ffe066" opacity=".7"><rect x="138" y="58" width="30" height="8" rx="4"/><rect x="138" y="74" width="50" height="8" rx="4"/></g>
+            <g stroke="#3ce0e0" stroke-width="2" opacity=".5"><path d="M40 128 L200 128"/></g>
+          </svg>
+        </div>
+        <div class="tdc-topic-body">
+          <h3>幕后工作台</h3>
+          <p>拆解一条视频的完整制作流程，从分镜到发布，强调方法而非设备。</p>
+          <span class="tdc-status">已更新 8 期 · 可回看</span>
+        </div>
+      </article>
+      <article class="tdc-topic">
+        <div class="tdc-topic-cover">
+          <svg viewBox="0 0 240 180" role="img" aria-label="专题封面：投票箱与选票卡片">
+            <rect width="240" height="180" fill="#22202e"/>
+            <rect x="66" y="70" width="108" height="80" rx="6" fill="#33304a"/>
+            <rect x="96" y="52" width="48" height="30" rx="4" fill="#ffe066" transform="rotate(-8 120 67)"/>
+            <rect x="106" y="86" width="28" height="6" rx="3" fill="#12101a"/>
+            <g fill="#ff2d55" opacity=".7"><rect x="40" y="40" width="14" height="14" rx="3"/><rect x="192" y="128" width="12" height="12" rx="3"/></g>
+          </svg>
+        </div>
+        <div class="tdc-topic-body">
+          <h3>周榜挑战 · 你来投票</h3>
+          <p>每周入围作品由社区投票决出人气作品，投票结果与榜单同步公示。</p>
+          <span class="tdc-status">本周投票开放中</span>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- 创作者矩阵 -->
+<section class="tdc-section" id="tdc-creators" style="background:var(--tdc-bg-soft);">
+  <div class="tdc-wrap">
+    <div class="tdc-section-head">
+      <div>
+        <div class="tdc-eyebrow">创作者矩阵</div>
+        <h2 class="tdc-h2">社区里的长期表达者</h2>
+        <p class="tdc-sub">他们来自不同城市与职业，持续更新、彼此点评，是内容生态最稳定的支点。</p>
+      </div>
+      <button class="tdc-btn tdc-btn-ghost" type="button" data-tdc-open="creator">查看创作者档案</button>
+    </div>
+    <div class="tdc-creators-grid">
+      <article class="tdc-creator">
+        <div class="tdc-creator-head">
+          <span class="tdc-creator-avatar" style="background:linear-gradient(135deg,#ff2d55,#ffe066);">陆</span>
+          <div><h3>陆行舟</h3><span>城市探索 · 夜景运镜</span></div>
+        </div>
+        <p>习惯在雨天出门，拍过一百多个路口。作品节奏克制，擅长用环境音替代旁白。</p>
+        <div class="tdc-creator-stats">
+          <div><b>186</b>作品</div><div><b>4.2万</b>关注</div><div><b>12</b>精选</div>
+        </div>
+        <div class="tdc-creator-more">本周挑战擂主</div>
+      </article>
+      <article class="tdc-creator">
+        <div class="tdc-creator-head">
+          <span class="tdc-creator-avatar" style="background:linear-gradient(135deg,#3ce0e0,#a8f0c8);">许</span>
+          <div><h3>许一页</h3><span>教程干货 · 内容方法</span></div>
+        </div>
+        <p>把创作流程写成可复用的清单，连载三十天日更复盘，被很多新人当作入门参考。</p>
+        <div class="tdc-creator-stats">
+          <div><b>233</b>作品</div><div><b>6.1万</b>关注</div><div><b>21</b>精选</div>
+        </div>
+        <div class="tdc-creator-more">内容方法论作者</div>
+      </article>
+      <article class="tdc-creator">
+        <div class="tdc-creator-head">
+          <span class="tdc-creator-avatar" style="background:linear-gradient(135deg,#ffc6a8,#ff8f5e);">何</span>
+          <div><h3>何小满</h3><span>情感故事 · 家庭记录</span></div>
+        </div>
+        <p>用镜头记录长辈的日常，作品多数没有旁白，却常被认为「看完想给家里打个电话」。</p>
+        <div class="tdc-creator-stats">
+          <div><b>97</b>作品</div><div><b>3.7万</b>关注</div><div><b>9</b>精选</div>
+        </div>
+        <div class="tdc-creator-more">口碑榜常驻作者</div>
+      </article>
+      <article class="tdc-creator">
+        <div class="tdc-creator-head">
+          <span class="tdc-creator-avatar" style="background:linear-gradient(135deg,#c4b5ff,#8a7bff);">邵</span>
+          <div><h3>邵木木</h3><span>手作 DIY · 器物观察</span></div>
+        </div>
+        <p>木工坊出身，擅长把打磨与等待的过程拍出呼吸感，画面里有木屑也有温度。</p>
+        <div class="tdc-creator-stats">
+          <div><b>142</b>作品</div><div><b>2.9万</b>关注</div><div><b>14</b>精选</div>
+        </div>
+        <div class="tdc-creator-more">手作专题合作作者</div>
+      </article>
+      <article class="tdc-creator">
+        <div class="tdc-creator-head">
+          <span class="tdc-creator-avatar" style="background:linear-gradient(135deg,#9fe8ff,#3ce0e0);">程</span>
+          <div><h3>程野</h3><span>户外活动 · 运动影像</span></div>
+        </div>
+        <p>骑行与徒步爱好者，习惯用第一视角记录路线，强调安全提示与路线攻略。</p>
+        <div class="tdc-creator-stats">
+          <div><b>118</b>作品</div><div><b>2.2万</b>关注</div><div><b>11</b>精选</div>
+        </div>
+        <div class="tdc-creator-more">周末挑战领跑者</div>
+      </article>
+      <article class="tdc-creator">
+        <div class="tdc-creator-head">
+          <span class="tdc-creator-avatar" style="background:linear-gradient(135deg,#ffd9a3,#d8a86a);">林</span>
+          <div><h3>林间有光</h3><span>日常记录 · 治愈影像</span></div>
+        </div>
+        <p>拍清晨、厨房和窗边的光。她说，日常本身就是最值得被反复记录的题材。</p>
+        <div class="tdc-creator-stats">
+          <div><b>204</b>作品</div><div><b>5.4万</b>关注</div><div><b>18</b>精选</div>
+        </div>
+        <div class="tdc-creator-more">本月人气创作者</div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- 影像墙 -->
+<section class="tdc-section" id="tdc-wall">
+  <div class="tdc-wrap">
+    <div class="tdc-section-head">
+      <div>
+        <div class="tdc-eyebrow">影像墙</div>
+        <h2 class="tdc-h2">来自社区的画面切片</h2>
+        <p class="tdc-sub">尺寸不一的封面来自不同赛题，记录着这个社区正在发生的日常。</p>
+      </div>
+    </div>
+    <div class="tdc-wall">
+      <figure class="tdc-wall-item">
+        <svg viewBox="0 0 400 400" role="img" aria-label="影像墙大图：日落时分的城市高架与车流灯带">
+          <rect width="400" height="400" fill="#2a1e2a"/>
+          <circle cx="300" cy="90" r="60" fill="#ff8f5e" opacity=".65"/>
+          <rect x="0" y="210" width="400" height="190" fill="#171221"/>
+          <path d="M0 300 L400 250 L400 400 L0 400 Z" fill="#0e0b14"/>
+          <g stroke="#ff2d55" stroke-width="3" opacity=".6" stroke-dasharray="22 16"><path d="M0 340 L400 292"/></g>
+          <g stroke="#ffe066" stroke-width="2" opacity=".5" stroke-dasharray="10 20"><path d="M0 372 L400 322"/></g>
+        </svg>
+        <figcaption class="tdc-wall-cap">城市一分钟 · 晚高峰</figcaption>
+      </figure>
+      <figure class="tdc-wall-item">
+        <svg viewBox="0 0 200 200" role="img" aria-label="影像墙中图：窗台上的绿植与光影">
+          <rect width="200" height="200" fill="#1d2a22"/>
+          <rect x="0" y="140" width="200" height="60" fill="#152019"/>
+          <path d="M100 140 L100 90" stroke="#7ab88a" stroke-width="4"/>
+          <g fill="#7ab88a"><ellipse cx="84" cy="106" rx="18" ry="10" transform="rotate(-25 84 106)"/><ellipse cx="118" cy="98" rx="18" ry="10" transform="rotate(22 118 98)"/><ellipse cx="100" cy="80" rx="14" ry="9"/></g>
+          <rect x="70" y="138" width="60" height="34" rx="4" fill="#8a5f36"/>
+          <circle cx="160" cy="50" r="26" fill="#ffe066" opacity=".22"/>
+        </svg>
+        <figcaption class="tdc-wall-cap">窗边的绿色角落</figcaption>
+      </figure>
+      <figure class="tdc-wall-item">
+        <svg viewBox="0 0 200 200" role="img" aria-label="影像墙中图：桌面上的胶片与小型录音设备">
+          <rect width="200" height="200" fill="#201a24"/>
+          <rect x="24" y="110" width="152" height="66" fill="#151019"/>
+          <g fill="none" stroke="#c4b5ff" stroke-width="2" opacity=".75">
+            <rect x="44" y="60" width="46" height="46" rx="6"/><circle cx="67" cy="83" r="12"/>
+            <rect x="106" y="72" width="52" height="34" rx="6"/><circle cx="120" cy="89" r="6"/><circle cx="144" cy="89" r="6"/>
+          </g>
+          <g stroke="#ff8f5e" stroke-width="2" opacity=".6"><path d="M40 148 L160 148"/></g>
+        </svg>
+        <figcaption class="tdc-wall-cap">录音与胶片日常</figcaption>
+      </figure>
+      <figure class="tdc-wall-item">
+        <svg viewBox="0 0 200 200" role="img" aria-label="影像墙小图：集市里悬挂的彩色布幔">
+          <rect width="200" height="200" fill="#2c2230"/>
+          <g><path d="M20 20 L60 80 L100 20 Z" fill="#ff2d55" opacity=".8"/><path d="M80 20 L120 80 L160 20 Z" fill="#ffe066" opacity=".8"/><path d="M140 20 L180 80 L200 20 Z" fill="#3ce0e0" opacity=".8"/></g>
+          <g fill="#e8d5a8" opacity=".5"><circle cx="50" cy="130" r="5"/><circle cx="110" cy="150" r="4"/><circle cx="164" cy="122" r="6"/></g>
+        </svg>
+        <figcaption class="tdc-wall-cap">集市里的颜色</figcaption>
+      </figure>
+      <figure class="tdc-wall-item">
+        <svg viewBox="0 0 200 200" role="img" aria-label="影像墙小图：夜路骑行的车灯轨迹">
+          <rect width="200" height="200" fill="#141b26"/>
+          <path d="M20 180 Q80 120 110 140 Q150 164 180 96" fill="none" stroke="#3ce0e0" stroke-width="3" opacity=".8"/>
+          <circle cx="180" cy="96" r="7" fill="#ffe066"/>
+          <g stroke="#2c3a4d" stroke-width="2"><path d="M0 150 L200 130"/><path d="M0 178 L200 158"/></g>
+        </svg>
+        <figcaption class="tdc-wall-cap">夜路车灯轨迹</figcaption>
+      </figure>
+      <figure class="tdc-wall-item">
+        <svg viewBox="0 0 400 400" role="img" aria-label="影像墙大图：手作工作台上散落的工具与木料">
+          <rect width="400" height="400" fill="#2b2119"/>
+          <rect x="0" y="150" width="400" height="250" fill="#3a2c20"/>
+          <rect x="60" y="230" width="140" height="36" rx="6" fill="#8a5f36"/>
+          <rect x="230" y="210" width="110" height="26" rx="6" fill="#a97546" transform="rotate(-6 285 223)"/>
+          <g stroke="#d8a86a" stroke-width="3" opacity=".7"><path d="M74 300 L150 300"/><path d="M180 332 L280 320"/></g>
+          <circle cx="300" cy="320" r="26" fill="none" stroke="#ffe066" stroke-width="4" opacity=".65"/>
+          <g fill="#ffe066" opacity=".45"><circle cx="80" cy="100" r="4"/><circle cx="330" cy="80" r="3"/><circle cx="250" cy="130" r="3"/></g>
+        </svg>
+        <figcaption class="tdc-wall-cap">打磨与等待</figcaption>
+      </figure>
+      <figure class="tdc-wall-item">
+        <svg viewBox="0 0 200 200" role="img" aria-label="影像墙小图：投票贴纸与编号标签">
+          <rect width="200" height="200" fill="#1e2230"/>
+          <g transform="rotate(-8 100 100)"><rect x="46" y="60" width="108" height="80" rx="8" fill="#ffe066" opacity=".85"/><rect x="66" y="84" width="68" height="8" rx="4" fill="#1e2230" opacity=".4"/><rect x="76" y="102" width="48" height="8" rx="4" fill="#1e2230" opacity=".3"/></g>
+          <circle cx="166" cy="44" r="16" fill="#ff2d55" opacity=".8"/>
+        </svg>
+        <figcaption class="tdc-wall-cap">本周投票贴纸</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- 用户评价 -->
+<section class="tdc-section" id="tdc-voices" style="background:var(--tdc-bg-soft);">
+  <div class="tdc-wrap">
+    <div class="tdc-section-head">
+      <div>
+        <div class="tdc-eyebrow">社区口碑</div>
+        <h2 class="tdc-h2">他们这样描述这个社区</h2>
+        <p class="tdc-sub">评价来自参与过挑战、专题与投稿的作者，语气与关注点各不相同。</p>
+      </div>
+    </div>
+    <div class="tdc-quotes">
+      <article class="tdc-quote">
+        <p>第一次投稿是因为「城市一分钟」的题目太具体，拍了才发现自己每天路过的那条街其实很有故事。</p>
+        <footer><span class="tdc-avatar" style="background:#ffd9a3;">周</span><b>周屿</b> · 投稿 14 次</footer>
+      </article>
+      <article class="tdc-quote">
+        <p>喜欢这里的原因很简单：评论里真的会有人告诉你第三镜可以再短两秒，而不是只留一个表情。</p>
+        <footer><span class="tdc-avatar" style="background:#9fe8ff;">安</span><b>安静的风</b> · 关注 8 个月</footer>
+      </article>
+      <article class="tdc-quote">
+        <p>作为学生，我没有很贵的设备，但赛题从来不要求设备。它要求你想清楚要讲什么，这很难也很公平。</p>
+        <footer><span class="tdc-avatar" style="background:#c4b5ff;">沈</span><b>沈按时</b> · 新人榜作者</footer>
+      </article>
+      <article class="tdc-quote">
+        <p>我们团队把这里当作内容试验场。每周挑一个题目做内部共创，比闭门想大纲有效得多。</p>
+        <footer><span class="tdc-avatar" style="background:#a8f0c8;">合</span><b>合拍工作室</b> · 品牌合作方</footer>
+      </article>
+      <article class="tdc-quote">
+        <p>榜单公开透明，落选也有反馈。被认真对待的感觉，比拿到名次更让我愿意留下来。</p>
+        <footer><span class="tdc-avatar" style="background:#ffc6a8;">唐</span><b>唐小楼</b> · 连续参赛 62 天</footer>
+      </article>
+      <article class="tdc-quote">
+        <p>我不太会写文案，但这里的标题建议功能很好用，给了我一个开始表达的台阶。</p>
+        <footer><span class="tdc-avatar" style="background:#e8c4a0;">吴</span><b>吴阿慢</b> · 影像墙入选作者</footer>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- 动态 + 合作 + FAQ -->
+<section class="tdc-section" id="tdc-news">
+  <div class="tdc-wrap">
+    <div class="tdc-eyebrow">企业动态</div>
+    <div class="tdc-news">
+      <div>
+        <h2 class="tdc-h2" style="font-size:24px;">官方发布与运营更新</h2>
+        <p class="tdc-sub" style="margin-bottom:22px;">赛制、功能与社区规则的变化会在这里同步，确保创作者第一时间了解。</p>
+        <div class="tdc-news-list">
+          <article class="tdc-news-item">
+            <div class="tdc-news-date">11 月<b>19</b></div>
+            <div><h3>「城市一分钟」第二季赛题上线，新增夜景运镜精选标签</h3><p>本期鼓励在有限时长内完成完整叙事，同时开放「无旁白」赛道。</p></div>
+          </article>
+          <article class="tdc-news-item">
+            <div class="tdc-news-date">11 月<b>16</b></div>
+            <div><h3>周末挑战报名通道开启，面向所有注册创作者</h3><p>本期挑战主题为「一口气讲完一件事」，报名截止 11 月 22 日 24:00。</p></div>
+          </article>
+          <article class="tdc-news-item">
+            <div class="tdc-news-date">11 月<b>12</b></div>
+            <div><h3>投稿页新增「素材来源说明」字段，强化原创与正版提示</h3><p>上传时需勾选原创声明，引用他人音乐与影像需注明授权方式。</p></div>
+          </article>
+          <article class="tdc-news-item">
+            <div class="tdc-news-date">11 月<b>08</b></div>
+            <div><h3>十月口碑榜公布，六位作者进入年度共创名单</h3><p>年度共创作品将于 12 月在官网专题页集中展示。</p></div>
+          </article>
+        </div>
+      </div>
+      <div>
+        <h2 class="tdc-h2" style="font-size:24px;">合作品牌与伙伴</h2>
+        <p class="tdc-sub" style="margin-bottom:18px;">与影像器材、文创空间与城市文化机构保持长期合作，共同推出命题与线下活动。</p>
+        <div class="tdc-partners" style="margin-bottom:34px;">
+          <span class="tdc-partner">光屿影像器材</span>
+          <span class="tdc-partner">城市记录计划</span>
+          <span class="tdc-partner">慢巷文创空间</span>
+          <span class="tdc-partner">北岸放映室</span>
+          <span class="tdc-partner">日常研究所</span>
+          <span class="tdc-partner">拾光胶片社</span>
+        </div>
+        <div class="tdc-quotebar" style="margin-top:0;">
+          合作咨询与命题共创请联系品牌合作邮箱，我们会在三个工作日内回复。所有合作内容均标注「官方发布」并接受社区监督。
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="tdc-section" id="tdc-faq" style="background:var(--tdc-bg-soft);">
+  <div class="tdc-wrap">
+    <div class="tdc-section-head">
+      <div>
+        <div class="tdc-eyebrow">帮助中心</div>
+        <h2 class="tdc-h2">常见问题</h2>
+        <p class="tdc-sub">关于投稿、赛题、版权与账号的常见疑问，展开即可查看说明。</p>
+      </div>
+      <button class="tdc-btn tdc-btn-ghost" type="button" data-tdc-open="feedback">提交反馈</button>
+    </div>
+    <div class="tdc-faq">
+      <details open>
+        <summary>如何参加每日主题赛？需要提前报名吗？</summary>
+        <p>每日赛题在官网首页与「专题企划」区发布，无需额外报名。点击「报名参与挑战」填写基本信息后即可进入投稿入口；周末挑战则需要单独报名，以便统计参与人数与作品归属。</p>
+      </details>
+      <details>
+        <summary>投稿作品有明确时长与格式要求吗？</summary>
+        <p>建议时长为 15 秒至 3 分钟，比例以 16:9 或 9:16 均可。为保证高清体验，推荐分辨率不低于 1080P。上传前请确认音频无版权争议，并按要求填写素材来源说明。</p>
+      </details>
+      <details>
+        <summary>作品如何进入精选与榜单？</summary>
+        <p>精选由编辑部结合当日主题完成度、叙事完整性与社区反馈综合评选；榜单则依据点赞、收藏、评论与完播情况综合排序。评选标准在专题页公开，结果接受申诉。</p>
+      </details>
+      <details>
+        <summary>使用第三方音乐或素材需要注意什么？</summary>
+        <p>请使用已获授权的音乐、字体与影像素材，并在投稿信息中注明来源。涉及他人肖像或私人场所的内容，需取得当事人同意。我们会对疑似侵权内容进行下架并通知作者。</p>
+      </details>
+      <details>
+        <summary>怎样提出合作或命题共创？</summary>
+        <p>品牌与机构可通过页脚合作邮箱提交需求，说明命题方向、参与规模与激励方案。合作命题将标注「官方发布」，规则与评选过程需对社区公开。</p>
+      </details>
+      <details>
+        <summary>作品被误判或收到不友善评论怎么办？</summary>
+        <p>可在作品页使用举报与反馈功能提交说明，或通过联系渠道发送邮件。社区运营团队会在两个工作日内处理，并对恶意评论进行清理。我们坚持用户至上与真实表达优先。</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- 联系 / 投稿入口 -->
+<section class="tdc-section" id="tdc-contact">
+  <div class="tdc-wrap">
+    <div class="tdc-news" style="align-items:center;">
+      <div>
+        <div class="tdc-eyebrow">联系与投稿</div>
+        <h2 class="tdc-h2">把你的今天，交给一个命题</h2>
+        <p class="tdc-sub" style="margin-bottom:20px;">无论你是刚开始拍摄，还是已经习惯日更，这里都有一条适合你的赛题。投稿前请阅读原创与版权提示，让我们一起维护值得信赖的内容生态。</p>
+        <div class="tdc-hero-btns" style="margin-bottom:0;">
+          <button class="tdc-btn tdc-btn-primary" type="button" data-tdc-open="submit">进入投稿入口</button>
+          <button class="tdc-btn tdc-btn-ghost" type="button" data-tdc-open="feedback">发送反馈</button>
+        </div>
+      </div>
+      <div>
+        <div class="tdc-quotebar" style="margin-top:0;">
+          <strong style="color:var(--tdc-yellow);">联系信息</strong><br>
+          品牌合作：brand@dailyarena.example<br>
+          投稿咨询：creator@dailyarena.example<br>
+          社区治理：support@dailyarena.example<br>
+          工作时间：周一至周五 10:00–19:00
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 页脚 -->
+<footer class="tdc-footer">
+  <div class="tdc-wrap">
+    <div class="tdc-footer-grid">
+      <div>
+        <div class="tdc-footer-logo">
+          <span class="tdc-logo-mark">T</span>
+          <span class="tdc-logo-text" style="font-size:15px;">推特每日大赛</span>
+        </div>
+        <p>推特每日大赛官方网站，专注每日主题赛与创作者内容生态。我们以品牌化方式持续运营赛题、榜单与专题，坚持原创、正版与高清呈现，致力于成为视频创作者值得信赖的竞技社区。</p>
+      </div>
+      <div>
+        <h4>快速导航</h4>
+        <ul>
+          <li><a href="#tdc-hero">首页</a></li>
+          <li><a href="#tdc-focus">焦点内容</a></li>
+          <li><a href="#tdc-videos">热门视频</a></li>
+          <li><a href="#tdc-topics">专题企划</a></li>
+          <li><a href="#tdc-creators">创作者</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>参与方式</h4>
+        <ul>
+          <li><a href="#tdc-videos">浏览今日佳作</a></li>
+          <li><a href="#tdc-topics">查看赛题规则</a></li>
+          <li><a href="#tdc-faq">版权与投稿说明</a></li>
+          <li><a href="#tdc-contact">联系合作</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>官方信息</h4>
+        <ul>
+          <li>运营主体：推特每日大赛内容团队</li>
+          <li>内容方向：原创短视频 · 主题挑战 · 社区共创</li>
+          <li>更新节奏：每日 10:00 赛题 · 22:30 榜单</li>
+          <li>版权声明：站内作品版权归创作者所有</li>
+        </ul>
+      </div>
+    </div>
+    <div class="tdc-footer-bottom">
+      <span>© 2026 推特每日大赛官方网站 · 版权所有 · 持续运营中</span>
+      <span>品牌故事 · 企业动态 · 官方发布 · 值得信赖的视频社区</span>
+    </div>
+  </div>
+</footer>
+
+<!-- Toast -->
+<div class="tdc-toast" id="tdc-toast" role="status" aria-live="polite"></div>
+
+<!-- 弹窗：投稿 -->
+<div class="tdc-modal" id="tdc-modal-submit" role="dialog" aria-modal="true" aria-labelledby="tdc-modal-submit-title">
+  <div class="tdc-modal-card">
+    <button class="tdc-modal-close" type="button" data-tdc-close aria-label="关闭">×</button>
+    <h3 id="tdc-modal-submit-title">投稿与报名入口</h3>
+    <p>填写基本信息后，我们会在 24 小时内发送投稿指引。请确保作品为原创并已确认素材授权。</p>
+    <label class="tdc-field">创作者昵称<input type="text" placeholder="例如：陆行舟"></label>
+    <label class="tdc-field">联系邮箱<input type="email" placeholder="用于接收投稿回执"></label>
+    <label class="tdc-field">参与赛题
+      <select>
+        <option>城市一分钟 · 第二季</option>
+        <option>周末挑战 · 一口气讲完一件事</option>
+        <option>写给你的一封信</option>
+        <option>周榜挑战投票</option>
+      </select>
+    </label>
+    <label class="tdc-field">作品说明<textarea rows="3" placeholder="简单描述你的构思与素材来源"></textarea></label>
+    <button class="tdc-btn tdc-btn-primary" type="button" data-tdc-form-notice style="width:100%;justify-content:center;">提交报名信息</button>
+  </div>
+</div>
+
+<!-- 弹窗：反馈 -->
+<div class="tdc-modal" id="tdc-modal-feedback" role="dialog" aria-modal="true" aria-labelledby="tdc-modal-feedback-title">
+  <div class="tdc-modal-card">
+    <button class="tdc-modal-close" type="button" data-tdc-close aria-label="关闭">×</button>
+    <h3 id="tdc-modal-feedback-title">反馈与举报</h3>
+    <p>遇到版权争议、不友善评论或功能异常，请留下说明，社区运营团队会在两个工作日内处理。</p>
+    <label class="tdc-field">问题类型
+      <select>
+        <option>版权与素材来源</option>
+        <option>评论与社区氛围</option>
+        <option>投稿与评选申诉</option>
+        <option>功能与页面异常</option>
+      </select>
+    </label>
+    <label class="tdc-field">详细说明<textarea rows="4" placeholder="请描述具体情况，可附作品标题"></textarea></label>
+    <label class="tdc-field">联系方式<input type="text" placeholder="邮箱或其他联系方式"></label>
+    <button class="tdc-btn tdc-btn-primary" type="button" data-tdc-form-notice style="width:100%;justify-content:center;">提交反馈</button>
+  </div>
+</div>
+
+<!-- 弹窗：创作者 -->
+<div class="tdc-modal" id="tdc-modal-creator" role="dialog" aria-modal="true" aria-labelledby="tdc-modal-creator-title">
+  <div class="tdc-modal-card">
+    <button class="tdc-modal-close" type="button" data-tdc-close aria-label="关闭">×</button>
+    <h3 id="tdc-modal-creator-title">创作者档案申请</h3>
+    <p>如果你在推特每日大赛持续更新并愿意公开自己的创作方向，可以申请加入创作者矩阵。</p>
+    <label class="tdc-field">昵称<input type="text" placeholder="你的常用昵称"></label>
+    <label class="tdc-field">擅长领域<input type="text" placeholder="例如：城市探索、教程干货"></label>
+    <label class="tdc-field">代表作品链接<input type="text" placeholder="填写站内作品标题或编号"></label>
+    <button class="tdc-btn tdc-btn-primary" type="button" data-tdc-form-notice style="width:100%;justify-content:center;">提交申请</button>
+  </div>
+</div>
+
+<button class="tdc-to-top" id="tdc-to-top" type="button" aria-label="回到顶部">↑</button>
+
+<script>
+(function(){
+  "use strict";
+  var d = document;
+
+  /* 移动端导航 */
+  var burger = d.getElementById('tdc-burger');
+  var nav = d.getElementById('tdc-mainnav');
+  if(burger && nav){
+    burger.addEventListener('click', function(){
+      var open = nav.classList.toggle('is-open');
+      burger.classList.toggle('is-open', open);
+      burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+    nav.addEventListener('click', function(e){
+      if(e.target.tagName === 'A' && window.innerWidth <= 760){
+        nav.classList.remove('is-open');
+        burger.classList.remove('is-open');
+        burger.setAttribute('aria-expanded','false');
+      }
+    });
+  }
+
+  /* Toast */
+  var toast = d.getElementById('tdc-toast');
+  var toastTimer = null;
+  function showToast(msg){
+    if(!toast) return;
+    toast.textContent = msg;
+    toast.classList.add('is-on');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function(){ toast.classList.remove('is-on'); }, 2200);
+  }
+
+  /* 搜索反馈 */
+  var searchForm = d.getElementById('tdc-search');
+  var searchInput = d.getElementById('tdc-search-input');
+  var feedback = d.getElementById('tdc-search-feedback');
+  var fbTimer = null;
+  function searchSuggest(){
+    if(!feedback) return;
+    var q = (searchInput && searchInput.value || '').trim();
+    if(!q){
+      feedback.textContent = '输入赛题、作者或标签关键词，例如「城市一分钟」「夜景」「剪辑」。';
+    }else{
+      var tips = [
+        '正在为你匹配「' + q + '」相关赛题与作品…',
+        '已为你筛选与「' + q + '」相关的创作者与标签，请浏览视频流。',
+        '「' + q + '」相关作品已就绪，可在热门视频流中查看标签结果。'
+      ];
+      feedback.textContent = tips[Math.floor(Math.random()*tips.length)];
+    }
+    feedback.classList.add('is-on');
+    clearTimeout(fbTimer);
+    fbTimer = setTimeout(function(){ feedback.classList.remove('is-on'); }, 3600);
+  }
+  if(searchForm && searchInput){
+    searchForm.addEventListener('submit', function(e){
+      e.preventDefault();
+      searchSuggest();
+      var q = searchInput.value.trim();
+      if(q){
+        var target = d.getElementById('tdc-videos');
+        if(target) target.scrollIntoView({behavior:'smooth', block:'start'});
+      }
+    });
+    searchInput.addEventListener('input', function(){
+      clearTimeout(fbTimer);
+      feedback.classList.remove('is-on');
+    });
+  }
+
+  /* 点赞 / 收藏 */
+  d.addEventListener('click', function(e){
+    var likeBtn = e.target.closest('[data-tdc-like]');
+    if(likeBtn){
+      var span = likeBtn.querySelector('span');
+      var liked = likeBtn.classList.toggle('is-liked');
+      if(span){
+        var base = parseInt(likeBtn.getAttribute('data-count') || '0', 10);
+        var current = parseInt(span.textContent.replace(/,/g,''), 10);
+        if(isNaN(current)) current = base || 0;
+        var next = liked ? current + 1 : Math.max(0, current - 1);
+        span.textContent = next.toLocaleString('en-US');
+      }
+      showToast(liked ? '已为这条作品点赞' : '已取消点赞');
+      return;
+    }
+    var saveBtn = e.target.closest('[data-tdc-save]');
+    if(saveBtn){
+      var saved = saveBtn.classList.toggle('is-saved');
+      saveBtn.textContent = saved ? '★' : '☆';
+      saveBtn.setAttribute('aria-label', saved ? '取消收藏此作品' : '收藏此作品');
+      showToast(saved ? '已加入我的收藏' : '已取消收藏');
+      return;
+    }
+    var copyBtn = e.target.closest('[data-tdc-copy]');
+    if(copyBtn){
+      var card = copyBtn.closest('.tdc-vcard');
+      var title = card ? card.querySelector('h3') : null;
+      var text = (title ? title.textContent : '推特每日大赛作品') + ' · 推特每日大赛官方网站';
+      if(navigator.clipboard && navigator.clipboard.writeText){
+        navigator.clipboard.writeText(text).then(function(){
+          showToast('链接已复制，可分享给同好');
+        }).catch(function(){
+          showToast('复制失败，请手动选择文本');
+        });
+      }else{
+        showToast('当前浏览器暂不支持一键复制');
+      }
+      return;
+    }
+  });
+
+  /* 弹窗 */
+  var modals = d.querySelectorAll('.tdc-modal');
+  function closeAllModals(){
+    modals.forEach(function(m){ m.classList.remove('is-on'); });
+  }
+  d.addEventListener('click', function(e){
+    var openTrigger = e.target.closest('[data-tdc-open]');
+    if(openTrigger){
+      var key = openTrigger.getAttribute('data-tdc-open');
+      var modal = d.getElementById('tdc-modal-' + key);
+      if(modal){
+        closeAllModals();
+        modal.classList.add('is-on');
+      }
+      return;
+    }
+    if(e.target.closest('[data-tdc-close]') || e.target.classList.contains('tdc-modal')){
+      closeAllModals();
+      return;
+    }
+    var notice = e.target.closest('[data-tdc-form-notice]');
+    if(notice){
+      closeAllModals();
+      showToast('已提交，请留意邮箱回执');
+    }
+  });
+  d.addEventListener('keydown', function(e){
+    if(e.key === 'Escape') closeAllModals();
+  });
+
+  /* 回到顶部 */
+  var toTop = d.getElementById('tdc-to-top');
+  function onScroll(){
+    if(!toTop) return;
+    if(window.scrollY > 520) toTop.classList.add('is-on');
+    else toTop.classList.remove('is-on');
+  }
+  window.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+  if(toTop){
+    toTop.addEventListener('click', function(){
+      window.scrollTo({top:0, behavior:'smooth'});
+    });
+  }
+
+  /* 当前导航高亮 */
+  var navLinks = d.querySelectorAll('.tdc-nav a');
+  var sections = [];
+  navLinks.forEach(function(a){
+    var id = a.getAttribute('href');
+    if(id && id.charAt(0) === '#'){
+      var sec = d.querySelector(id);
+      if(sec) sections.push({link:a, sec:sec});
+    }
+  });
+  if('IntersectionObserver' in window && sections.length){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        if(en.isIntersecting){
+          var match = sections.find(function(s){ return s.sec === en.target; });
+          if(match){
+            navLinks.forEach(function(l){ l.classList.remove('is-active'); });
+            match.link.classList.add('is-active');
+          }
+        }
+      });
+    }, {rootMargin:'-40% 0px -52% 0px', threshold:0});
+    sections.forEach(function(s){ io.observe(s.sec); });
+  }
+})();
+</script>
+</body>
+                                                                           </html>
